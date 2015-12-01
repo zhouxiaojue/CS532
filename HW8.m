@@ -185,7 +185,7 @@ eLSall=[];
 eGKall=[];
 ePLall=[];
 for k=1:100
-    m = 10;
+    m = 1000;
     n = 2;
     b = zeros(m,1);
     for i=1:m
@@ -214,15 +214,15 @@ for k=1:100
     eGKall(k)=sum(svmclassify(aGK,At)~=bt);
    
     %polynomial kernel
-    aPL=svmtrain(A,b,'Kernel_Function',@(u,v) (u*v'+1)^2);
+    aPL=svmtrain(A,b,'Kernel_Function','quadratic');
     ePLall(k)=sum(svmclassify(aPL,At)~=bt);
 end
 MSEPL=mean(ePLall);
 MSEGK=mean(eGKall);
 MSELS=mean(eLSall);
-%m=10 MSEPL:MSEGK: MSELS:
-%m=100 MSEPL: MSEGK:49.58 MSELS:
-%m=1000 MSEPL: MSEGK: MSELS:
+%m=10 MSEPL:21.71 MSEGK:25.81 MSELS:50.14
+%m=100 MSEPL:4.21 MSEGK:4.92 MSELS:49.1
+%m=1000 MSEPL:1.28 MSEGK:1.51 MSELS:50.53
 
 %%
 clear
@@ -230,7 +230,7 @@ clear
 %transfer feet to inches
 train=[70 71 73 82]';
 class=[-1 -1 1 1]';
-out=svmtrain(train,class);
+out=svmtrain(train,class,'boxconstraint',100);
 predict=svmclassify(out,train);
 %here the hinge loss cut the boundary between 6'1'' and 6'10''
 %7
